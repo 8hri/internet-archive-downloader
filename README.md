@@ -1,4 +1,4 @@
-# Hermes — Internet Archive Downloader
+# Internet Archive Downloader
 
 A small TypeScript/Node service that analyzes public Internet Archive items and streams validated files without buffering complete downloads.
 

@@ -229,7 +229,11 @@ It must never require the entire remote file to fit in memory.
 
 ---
 
-### 5.7 Security Validator
+### 5.7 Native Video Streaming
+
+The same validated item/file resolver used for downloads may expose browser-native video playback for supported MP4, WebM, Ogg, and OGV files. Streaming remains progressive and does not transcode media. A dedicated stream endpoint forwards client Range requests to Internet Archive and returns upstream media headers and response status without buffering the full body. Browser codec compatibility and upstream Range support are runtime concerns, not guarantees of the file extension alone.
+
+### 5.8 Security Validator
 
 Responsibilities:
 

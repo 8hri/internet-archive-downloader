@@ -1,7 +1,7 @@
 import type { FileType } from './types.js';
 
 const TYPE_EXTENSIONS: Record<FileType, string[]> = {
-  video: ['mp4', 'mkv', 'webm', 'avi', 'mov', 'm4v', 'mpeg', 'mpg'],
+  video: ['mp4', 'mkv', 'webm', 'avi', 'mov', 'm4v', 'mpeg', 'mpg', 'ogv'],
   audio: ['mp3', 'flac', 'wav', 'ogg', 'opus', 'm4a', 'aac'],
   image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tif', 'tiff', 'bmp', 'svg'],
   document: ['pdf', 'epub', 'mobi', 'azw', 'azw3', 'djvu', 'txt', 'doc', 'docx'],

@@ -5,6 +5,7 @@ import { classifyFile, isSupportFile } from '../src/classifier.js';
 import { safeFilename, contentDisposition } from '../src/filename.js';
 import { recommendFiles, scoreFile } from '../src/recommender.js';
 import { validateTrustedUrl } from '../src/security.js';
+import { isBrowserPlayableVideo } from '../src/download.js';
 import type { ArchiveFile } from '../src/types.js';
 
 test('parses supported Internet Archive URLs and rejects unrelated hosts', () => {
@@ -35,6 +36,15 @@ test('recommends user-facing content and does not hide legitimate alternatives',
   assert.equal(ranked[0].name, 'book.pdf');
   assert.ok(ranked.some((f) => f.name === 'cover.jpg'));
   assert.ok(scoreFile(ranked[0]) > 0);
+});
+test('identifies browser-playable video files without enabling arbitrary formats', () => {
+  const base = { downloadable: true, restricted: false, supportFile: false, recommended: false, format: 'MPEG4', size: 1000 };
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'movie.mp4', type: 'video' }), true);
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'movie.webm', type: 'video' }), true);
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'movie.ogv', type: 'video' }), true);
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'notes.pdf', type: 'document' }), false);
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'movie.mkv', type: 'video' }), false);
+  assert.equal(isBrowserPlayableVideo({ ...base, name: 'movie.mp4', type: 'video', restricted: true }), false);
 });
 test('sanitizes filenames and header values', () => {
   assert.equal(safeFilename('../../evil\r\nname?.txt'), 'evil__name_.txt');

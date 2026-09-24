@@ -15,7 +15,7 @@
     .error { padding: .8rem; border-left: 4px solid #dc2626; background: #fee2e2; color: #7f1d1d; }
     .item { border-top: 1px solid #d1d5db; margin-top: 2rem; padding-top: 1rem; } .file { display: flex; gap: 1rem; align-items: center; border: 1px solid #d1d5db; border-radius: .5rem; padding: .8rem; margin: .6rem 0; }
     .file-main { flex: 1; min-width: 0; } .name { overflow-wrap: anywhere; font-weight: 600; } .meta { color: #6b7280; font-size: .9rem; }
-    a { color: #1d4ed8; } .restricted { opacity: .65; } @media (prefers-color-scheme: dark) { body { background: #111827; color: #f9fafb; } .file { border-color: #4b5563; } .muted, .meta { color: #9ca3af; } .error { background: #450a0a; color: #fecaca; } a { color: #93c5fd; } }
+    a { color: #1d4ed8; } .restricted { opacity: .65; } .watch { margin-top: 2rem; border-top: 1px solid #d1d5db; padding-top: 1rem; } .watch video { display: block; width: 100%; max-height: 70vh; background: #000; border-radius: .4rem; margin-top: 1rem; } @media (prefers-color-scheme: dark) { body { background: #111827; color: #f9fafb; } .file { border-color: #4b5563; } .muted, .meta { color: #9ca3af; } .error { background: #450a0a; color: #fecaca; } a { color: #93c5fd; } .watch { border-color: #4b5563; } }
   </style>
 </head>
 <body>
@@ -25,6 +25,12 @@
     <form id="analyze-form"><label for="archive-url">Internet Archive URL</label><input id="archive-url" name="url" type="url" required placeholder="https://archive.org/details/example"><button type="submit">Analyze</button></form>
     <p id="status" role="status" aria-live="polite"></p>
     <section id="results" aria-live="polite"></section>
+    <section id="watch" class="watch" hidden aria-live="polite">
+      <button type="button" class="secondary" id="close-watch">Close player</button>
+      <h2 id="watch-title"></h2>
+      <video id="watch-player" controls preload="metadata" playsinline></video>
+      <p id="watch-status" class="muted" role="status"></p>
+    </section>
   </main>
   <script src="/app.js" defer></script>
 </body>

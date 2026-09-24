@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { asAppError, AppError } from './errors.js';
 import { fetchAnalysis } from './metadata.js';
 import { parseArchiveUrl } from './url-parser.js';
-import { streamDownload } from './download.js';
+import { streamDownload, streamVideo } from './download.js';
 
 const root = join(process.cwd(), 'public');
 const port = Number(process.env.PORT ?? 3000);
@@ -19,6 +19,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
   if (req.method === 'GET' && url.pathname === '/app.js') { const content = await readFile(join(root, 'app.js')); res.writeHead(200, { 'content-type': mime['.js'], 'x-content-type-options': 'nosniff' }); res.end(content); return; }
   if (req.method === 'POST' && url.pathname === '/api/archive/analyze') { const input = await body(req) as { url?: unknown }; json(res, 200, await fetchAnalysis(parseArchiveUrl(input.url))); return; }
   if (req.method === 'GET' && url.pathname === '/api/archive/download') { await streamDownload(url.searchParams.get('identifier') ?? '', url.searchParams.get('file') ?? '', req.headers.range, res); return; }
+  if ((req.method === 'GET' || req.method === 'HEAD') && url.pathname === '/api/archive/stream') { await streamVideo(url.searchParams.get('identifier') ?? '', url.searchParams.get('file') ?? '', req.headers.range, res, req.method === 'HEAD'); return; }
   throw new AppError('BAD_REQUEST', 'Route not found.', 404);
 }
 
